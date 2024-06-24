@@ -30,3 +30,15 @@
 *.exe
 *.out
 *.app
+.vscode/.easycpp
+.vscode/launch.json
+.vscode/settings.json
+.vscode/tasks.json
+bin/main
+bin/main.dSYM/Contents/Info.plist
+bin/main.dSYM/Contents/Resources/DWARF/main
+bin/main.dSYM/Contents/Resources/Relocations/aarch64/main.yml
+main
+main.dSYM/Contents/Resources/Relocations/aarch64/main.yml
+main.dSYM/Contents/Info.plist
+Makefile
