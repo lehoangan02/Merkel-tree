@@ -1,10 +1,33 @@
 #include <iostream>
-#include <string>
 #include <vector>
+#include "Nodes.hpp"
 
-void printDifferences(std::string s1, std::string s2)
+void findDifferences(internalNode* pRoot1, internalNode* pRoot2, std::vector<std::pair<dataNode*, dataNode*>>& res) //Assuming 2 trees are the same size
+{       
+    if (!pRoot1 || !pRoot2)
+        return;
+    if (pRoot1->isLeaf && pRoot2->isLeaf)
+    {
+        if (pRoot1->hash != pRoot2->hash)
+        {
+            dataNode* node1 = static_cast<leafNode*>(pRoot1)->pData;
+            dataNode* node2 = static_cast<leafNode*>(pRoot2)->pData;
+            res.push_back(std::pair<dataNode*, dataNode*>(node1, node2));
+        }
+    }
+    else if (!pRoot1->isLeaf && !pRoot2->isLeaf)
+    {
+        if (pRoot1->hash == pRoot2->hash)
+            return;
+        findDifferences(pRoot1->pLeft, pRoot2->pLeft, res);
+        findDifferences(pRoot1->pRight, pRoot2->pRight, res);
+    } 
+}
+
+void printDifferences(internalNode* pRoot1, internalNode* pRoot2)
 {
-    std::vector<int> res = findDifferences(s1, s2);
+    std::vector<std::pair<dataNode*, dataNode*>> res;
+    findDifferences(pRoot1, pRoot2, res);
     if (res.size() == 0)
     {
         std::cout << "Same\n";
@@ -12,26 +35,6 @@ void printDifferences(std::string s1, std::string s2)
     }
     for (int i = 0; i < res.size(); ++i)
     {
-        std::cout << res[i] << ": ";
-        if (res[i] >= s1.length())
-            std::cout << "null" << " --> " << s2[res[i]] << '\n';
-        else if (res[i] >= s2.length())
-            std::cout << s1[res[i]] << " --> " << "null" << '\n';
-        else
-            std::cout << s1[res[i]] << " --> " << s2[res[i]] << '\n';
+        std::cout << res[i].first->value << " --> " << res[i].second->value << "\n";
     }
-}
-
-std::vector<int> findDifferences(std::string s1, std::string s2)
-{       
-    if (s1.length() > s2.length())
-        return findDifferences(s2, s1);
-    std::vector<int> res;
-    int l = s2.length();
-    for (int i = 0; i < l; ++i)
-    {
-        if (i >= s1.length() || s1[i] != s2[i])
-            res.push_back(i);
-    }
-    return res;
 }
