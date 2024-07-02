@@ -84,3 +84,17 @@ internalNode* buildInternal(std::vector<internalNode*>& nodeVecLower)
     }
     return buildInternal(nodeVecUpper);
 }
+internalNode* buildMerkleTree(std::string input)
+{
+    std::vector<dataNode*> dataVec;
+    for (int i = 0; i < (int)input.size(); ++i)
+    {
+        dataNode* newData = new dataNode;
+        newData -> value = (unsigned char)input[i];
+        dataVec.push_back(newData);
+    }
+    std::vector<leafNode*> leafVec = hashDataToLeaf(dataVec);
+    std::vector<internalNode*> nodeVec = buildLeaf(leafVec);
+    internalNode* pRoot = buildInternal(nodeVec);
+    return pRoot;
+}
