@@ -2,6 +2,29 @@
 #include <vector>
 #include "Nodes.hpp"
 
+dataNode* findDataNode(internalNode* currentNode, const std::string& targetHash) {
+    if (currentNode == nullptr) {
+        return nullptr; // Base case: reached the end of the tree
+    }
+
+    if (currentNode->isLeaf) {
+        // Check if the leaf node's hash matches the target hash
+        if (currentNode->hash == targetHash) {
+            return currentNode->pData;
+        }
+        else {
+            return nullptr; // Leaf node doesn't match
+        }
+    }
+
+    // Recursively search left and right subtrees
+    dataNode* leftResult = findDataNode(currentNode->pLeft, targetHash);
+    if (leftResult != nullptr) {
+        return leftResult;
+    }
+    return findDataNode(currentNode->pRight, targetHash);
+}
+
 std::vector<std::string> generateMerkleProof(leafNode* targetLeaf) {
     std::vector<std::string> proof;
     internalNode* currentNode = targetLeaf;
@@ -23,6 +46,13 @@ std::vector<std::string> generateMerkleProof(leafNode* targetLeaf) {
     }
 
     return proof;
+}
+
+void printMerkleProof(const std::vector<std::string>& proof) {
+    std::cout << "Merkle Proof:\n";
+    for (const std::string& hash : proof) {
+        std::cout << hash << std::endl;
+    }
 }
 
 void findDifferences(internalNode* pRoot1, internalNode* pRoot2, std::vector<std::pair<dataNode*, dataNode*>>& res) //Assuming 2 trees are the same size

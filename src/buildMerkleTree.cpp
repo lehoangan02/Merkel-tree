@@ -29,6 +29,7 @@ std::vector<leafNode*> hashDataToLeaf(std::vector<dataNode*>& dataVec)
     }
     return leafVec;
 }
+
 std::vector<internalNode*> buildLeaf(std::vector<leafNode*> leafVec)
 {
     std::vector<internalNode*> nodeVec;
@@ -55,6 +56,7 @@ std::vector<internalNode*> buildLeaf(std::vector<leafNode*> leafVec)
     }
     return nodeVec;
 }
+
 internalNode* buildInternal(std::vector<internalNode*>& nodeVecLower)
 {
     std::vector<internalNode*> nodeVecUpper;
@@ -84,6 +86,7 @@ internalNode* buildInternal(std::vector<internalNode*>& nodeVecLower)
     }
     return buildInternal(nodeVecUpper);
 }
+
 internalNode* buildMerkleTree(std::string input)
 {
     std::vector<dataNode*> dataVec;
