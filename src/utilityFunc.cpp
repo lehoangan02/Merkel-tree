@@ -2,27 +2,21 @@
 #include <vector>
 #include "Nodes.hpp"
 
-dataNode* findDataNode(internalNode* currentNode, const std::string& targetHash) {
-    if (currentNode == nullptr) {
-        return nullptr; // Base case: reached the end of the tree
+dataNode* findDataNode(internalNode* root, unsigned char targetValue) {
+    if (root == nullptr) return nullptr;
+
+    if (root->isLeaf) {
+        leafNode* leaf = static_cast<leafNode*>(root);
+        if (leaf->pData && leaf->pData->value == targetValue) {
+            return leaf->pData;
+        }
+        return nullptr;
     }
 
-    if (currentNode->isLeaf) {
-        // Check if the leaf node's hash matches the target hash
-        if (currentNode->hash == targetHash) {
-            return currentNode->pData;
-        }
-        else {
-            return nullptr; // Leaf node doesn't match
-        }
-    }
+    dataNode* foundInLeft = findDataNode(root->pLeft, targetValue);
+    if (foundInLeft) return foundInLeft;
 
-    // Recursively search left and right subtrees
-    dataNode* leftResult = findDataNode(currentNode->pLeft, targetHash);
-    if (leftResult != nullptr) {
-        return leftResult;
-    }
-    return findDataNode(currentNode->pRight, targetHash);
+    return findDataNode(root->pRight, targetValue);
 }
 
 std::vector<std::string> generateMerkleProof(leafNode* targetLeaf) {

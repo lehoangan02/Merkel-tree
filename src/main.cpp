@@ -16,7 +16,7 @@ int main() {
 
     //This task is for checking the existance
     std::cout << "\n1) Checking for the existance" << std::endl;
-    unsigned char targetValues[] = { 'a', 'b', 'c', 'd' }; // 'd' is not in the tree
+    unsigned char targetValues[] = { 'a', 'b', 'c', 'd' }; 
     for (unsigned char target : targetValues) {
         dataNode* foundNode = findDataNode(pRoot1, target);
 
