@@ -2,6 +2,29 @@
 #include <vector>
 #include "Nodes.hpp"
 
+std::vector<std::string> generateMerkleProof(leafNode* targetLeaf) {
+    std::vector<std::string> proof;
+    internalNode* currentNode = targetLeaf;
+
+    while (currentNode->pParent != nullptr) {
+        internalNode* parent = currentNode->pParent;
+
+        if (parent->pLeft == currentNode) {
+
+            if (parent->pRight != nullptr) { // Sibling is the right child
+                proof.push_back(parent->pRight->hash);
+            }
+        }
+        else {
+            proof.push_back(parent->pLeft->hash);  // Sibling is the left child
+        }
+
+        currentNode = parent;
+    }
+
+    return proof;
+}
+
 void findDifferences(internalNode* pRoot1, internalNode* pRoot2, std::vector<std::pair<dataNode*, dataNode*>>& res) //Assuming 2 trees are the same size
 {       
     if (!pRoot1 || !pRoot2)
